@@ -47,10 +47,10 @@ function chooseMethod() {
 function selectMethod(choice) {
 
 	switch(choice) {
-		case 1:
+		case "View Product Sales by Department":
 	        viewSales();
 	        break;
-	    case 2:
+	    case "Create New Department":
 	        createDepartment();
 	        break;
 	    default:
@@ -62,6 +62,8 @@ function selectMethod(choice) {
 
 function viewSales() {
 
+	console.log("View Sales");
+
 	
 
 
@@ -71,6 +73,10 @@ function viewSales() {
 
 function createDepartment() {
 
+	console.log("Create Department");
+
 
 	
 };
+
+chooseMethod();
