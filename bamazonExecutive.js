@@ -62,20 +62,7 @@ function selectMethod(choice) {
 
 function viewSales() {
 
-	connection.query('SELECT * FROM music WHERE genre = ? AND artist = ?', ['Rock', 'Josue'], function(err, res){
-
-		if(err) {
-			console.log(err);
-		}
-		else {
-			for (i=0; i<res.length; i++) {
-				console.log("Artist: " + res[i].artist);
-				console.log("Title:  " + res[i].title);
-				console.log("Genre:  " + res[i].genre);
-				console.log("----------------------------");
-			}
-		}
-	})
+	
 
 
 
