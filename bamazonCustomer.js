@@ -25,6 +25,8 @@ var connection = mysql.createConnection({
 	database: 'bamazon'
 })
 
+var purchase = 0;
+
 
 function openStore() {
 
@@ -59,8 +61,6 @@ function chooseMethod() {
 		// They submitted the form, check their entry
 		var order = new Order(data.product, data.units);
 		return order.stockCheck(order);
-	}).then(function(data) {
-		showProducts();
 	});
 }
 
@@ -91,6 +91,7 @@ function Order(product, units) {
 	this.product = product;
 	this.units = units;
 	this.stockCheck = function(order) {
+
 		// query the product id and find out how many quantity are in stock
 		connection.query('SELECT stock_quantity FROM products WHERE id = ?', [order.product], function(err, res){
 			if(err) {
@@ -103,22 +104,36 @@ function Order(product, units) {
 					// update the stock in the database
 					var newStock = res[0].stock_quantity - order.units;
 					order.updateStock(newStock, order);
-					
 				}
 				else {
+
 					console.log(" ");
 					console.log(" ");
 					console.log("Insufficient Quantity. Only " + res[0].stock_quantity + " of this product are currently available.");
 					console.log(" ");
 					console.log(" ");
+
+					showProducts();
 				}
 			}
 		});	
-
-		return order.printReceipt(order);		
 	};
 
-	this.printReceipt = function(order) {
+	this.updateStock = function(newStock, order) {
+		// update stock quantity post-order
+		connection.query('UPDATE products set ? WHERE ?', [
+			{stock_quantity: newStock},
+			{id: order.product}
+		], function(err, res){
+
+			if(err) {
+				console.log(err);
+			}
+			else {
+
+			}
+		});
+	// print receipt
 		connection.query('SELECT * FROM products WHERE id = ?', [order.product], function(err, res){
 			if(err) {
 				console.log(err);
@@ -137,23 +152,7 @@ function Order(product, units) {
 				console.log(" ");
 			}
 		});	
-		return;
-	};
-
-	this.updateStock = function(newStock, order) {
-		// update stock quantity post-order
-		connection.query('UPDATE products set ? WHERE ?', [
-			{stock_quantity: newStock},
-			{id: order.product}
-		], function(err, res){
-
-			if(err) {
-				console.log(err);
-			}
-			else {
-
-			}
-		})	
+		showProducts();
 	};
 }
 
