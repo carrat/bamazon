@@ -25,11 +25,7 @@ var connection = mysql.createConnection({
 	database: 'bamazon'
 })
 
-var purchase = 0;
-
-
 function openStore() {
-
 	//display all prducts availabe for sale
 	console.log(" ");
 	console.log("Welcome to My Store");
@@ -40,7 +36,6 @@ function openStore() {
 	console.log(" ");
 
 	showProducts();
-	
 }
 
 function chooseMethod() {
@@ -65,12 +60,9 @@ function chooseMethod() {
 }
 
 function showProducts() {
-	
-
 	var availableProducts= [];
 	// query database to grab all availabe products
-	connection.query('SELECT id, product_name, price, stock_quantity FROM products ORDER BY department', function(err, res) {
-            
+	connection.query('SELECT id, product_name, price, stock_quantity FROM products ORDER BY department', function(err, res) {       
         if(err) {
 		console.log(err);
 		}
@@ -81,17 +73,14 @@ function showProducts() {
             }
             console.table(availableProducts);
 		}
-
 		chooseMethod();
 	});
-	
 }
 
 function Order(product, units) {
 	this.product = product;
 	this.units = units;
 	this.stockCheck = function(order) {
-
 		// query the product id and find out how many quantity are in stock
 		connection.query('SELECT stock_quantity FROM products WHERE id = ?', [order.product], function(err, res){
 			if(err) {
@@ -130,7 +119,6 @@ function Order(product, units) {
 				console.log(err);
 			}
 			else {
-
 			}
 		});
 	// print receipt
