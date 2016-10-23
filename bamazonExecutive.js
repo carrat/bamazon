@@ -62,7 +62,30 @@ function selectMethod(choice) {
 
 function viewSales() {
 
-	console.log("View Sales");
+	console.log("");
+	console.log("************************");
+	console.log("Sales Figures");
+	console.log("************************");
+	console.log("");
+
+	var totalSales= [];
+	// query database to grab all availabe products
+	connection.query('SELECT id, department_name, overhead_costs, total_sales FROM departments', function(err, res) {
+            
+        if(err) {
+		console.log(err);
+		}
+		else {
+            for (i=0; i<res.length; i++) {
+            	var nextDepartment = {'id': res[i].id, 'department': res[i].department_name, 
+            	'costs': "$" + res[i].overhead_costs.toFixed(2), 'sales': "$" + res[i].total_sales.toFixed(2), 'total profit': '$' + parseFloat(res[i].total_sales - res[i].overhead_costs).toFixed(2)};
+            	totalSales.push(nextDepartment);
+            }
+            console.table(totalSales);
+		}
+
+		chooseMethod();
+	});
 
 	
 
